@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FER FLOWERS - CART</title>
+    <link rel="icon" type="image/png" href="Images/fwdlogoferflowers/ferflower-logo.png">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <section id="header">
+        <a href="#"><img src="Images/fwdlogoferflowers/ferflower-logo.png" class="logo" alt=""></a>
+
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a class="active" href="cart.html">
+                    <i class="far fa-shopping-bag"></i>
+                    <span id="cart-count">0</span>
+                </a></li>
+                <a href="#" id="close"><i class="far fa-times"></i></a>
+            </ul>
+        </div>
+        <div id="mobile">
+            <a href="cart.html"><i class="far fa-shopping-bag"></i></a>
+            <i id="bar" class="fas fa-outdent"></i>
+        </div>
+    </section>
+
+    <section id="page-header" class="about-header">
+        <h2>Your Cart</h2>
+        <p>Review your selected items</p>
+    </section>
+
+    <section id="cart" class="section-p1">
+        <table width="100%">
+            <thead>
+                <tr>
+                    <td>Remove</td>
+                    <td>Image</td>
+                    <td>Product</td>
+                    <td>Price</td>
+                    <td>Quantity</td>
+                    <td>Subtotal</td>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Cart items will be dynamically added here -->
+            </tbody>
+        </table>
+    </section>
+
+    <section id="cart-add" class="section-p1">
+        <div id="subtotal">
+            <h3>Cart Totals</h3>
+            <table>
+                <tr>
+                    <td>Cart Subtotal</td>
+                    <td>$0</td>
+                </tr>
+                <tr>
+                    <td>Shipping</td>
+                    <td>Free</td>
+                </tr>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td><strong>$0</strong></td>
+                </tr>
+            </table>
+            <p class="payment-info">We use Square for secure payment processing</p>
+            <img src="https://squareup.com/favicon.ico" alt="Square" style="width: 20px; margin-right: 5px;">
+            <button class="normal" onclick="window.location.href='checkout.html'">Proceed to Secure Checkout</button>
+        </div>
+    </section>
+
+    <footer class="section-p1">
+        <div class="col">
+            <img src="Images/fwdlogoferflowers/ferflower-logo.png" class="logo" alt="">
+            <h4>Contact</h4>
+            <p><strong>Phone:</strong> 📲 (305) 815-3496 / (305) 815-5430</p>
+            <p><strong>Email:</strong> 📩 info@ferflowers.com</p>
+            <div class="follow">
+                <h4>Follow Us</h4>
+                <div class="icon">
+                    <a href="https://www.instagram.com/ferflowers.shop?igsh=aWx6ZGxxN2J5aGU4" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>@ 2024, FER FLOWERS</p>
+        </div>
+    </footer>
+
+    <!-- Add Square Web Payments SDK -->
+    <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+    <script>
+        const paymentForm = {
+            // Initialize Square payment form
+            async init() {
+                if (!window.Square) {
+                    throw new Error('Square.js failed to load properly');
+                }
+                
+                const payments = window.Square.payments('YOUR_APPLICATION_ID', 'YOUR_LOCATION_ID');
+                const card = await payments.card();
+                await card.attach('#card-container');
+                
+                const button = document.getElementById('checkout-button');
+                button.addEventListener('click', async function(event) {
+                    event.preventDefault();
+                    
+                    try {
+                        const result = await card.tokenize();
+                        if (result.status === 'OK') {
+                            // Use result.token to process the payment on your server
+                            console.log('Payment token:', result.token);
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        // Handle payment errors
+                    }
+                });
+            }
+        };
+
+        // Initialize the payment form
+        paymentForm.init();
+    </script>
+
+</body>
+
+</html>

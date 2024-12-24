@@ -1,0 +1,19 @@
+# www.ferflowers.com robots.txt file
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /shop.html
+Allow: /about.html
+Allow: /contact.html
+Allow: /Images/
+Allow: /css/
+Allow: /js/
+
+# Disallow checkout and cart pages for privacy
+Disallow: /checkout.html
+Disallow: /cart.html
+
+# Crawl-delay: 10
+
+# Sitemap
+Sitemap: https://www.ferflowers.com/sitemap.xml

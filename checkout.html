@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FER FLOWERS - Checkout</title>
+    <link rel="icon" type="image/png" href="Images/fwdlogoferflowers/ferflower-logo.png">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+    <link rel="stylesheet" href="style.css">
+    <!-- Square Payment Form CSS -->
+    <link rel="stylesheet" type="text/css" href="https://sandbox.web.squarecdn.com/v1/square.css" />
+</head>
+
+<body>
+    <section id="header">
+        <a href="#"><img src="Images/fwdlogoferflowers/ferflower-logo.png" class="logo" alt=""></a>
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a class="active" href="cart.html"><i class="far fa-shopping-bag"></i></a></li>
+                <a href="#" id="close"><i class="far fa-times"></i></a>
+            </ul>
+        </div>
+        <div id="mobile">
+            <a href="cart.html"><i class="far fa-shopping-bag"></i></a>
+            <i id="bar" class="fas fa-outdent"></i>
+        </div>
+    </section>
+
+    <section id="checkout-header" class="section-p1">
+        <h2>Secure Checkout</h2>
+        <p>We use Square for secure payment processing</p>
+    </section>
+
+    <section id="payment-info" class="section-p1">
+        <div class="payment-container">
+            <div class="payment-details">
+                <h3>Payment Information</h3>
+                <p>For your security and convenience, we process all payments through Square's secure payment platform.</p>
+                
+                <div class="payment-logos">
+                    <img src="Images/payment/square-logo.png" alt="Square Logo" style="height: 50px; margin: 10px;">
+                    <div class="card-logos">
+                        <img src="Images/payment/visa.png" alt="Visa" style="height: 30px; margin: 5px;">
+                        <img src="Images/payment/mastercard.png" alt="Mastercard" style="height: 30px; margin: 5px;">
+                        <img src="Images/payment/amex.png" alt="American Express" style="height: 30px; margin: 5px;">
+                        <img src="Images/payment/discover.png" alt="Discover" style="height: 30px; margin: 5px;">
+                    </div>
+                </div>
+
+                <!-- Square Payment Form will be inserted here -->
+                <div id="payment-form">
+                    <div id="card-container"></div>
+                    <button id="card-button" type="button">Pay Now</button>
+                    <div id="payment-status-container"></div>
+                </div>
+
+                <div class="square-benefits">
+                    <ul>
+                        <li><i class="fas fa-lock"></i> Secure Payment Processing</li>
+                        <li><i class="fas fa-shield-alt"></i> Protected Transaction</li>
+                        <li><i class="fas fa-credit-card"></i> Accept All Major Credit Cards</li>
+                        <li><i class="fas fa-mobile-alt"></i> Mobile Payment Options</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="section-p1">
+        <div class="col">
+            <img src="Images/fwdlogoferflowers/ferflower-logo.png" class="logo" alt="">
+            <h4>Contact</h4>
+            <p><strong>Phone:</strong> 📲 (305) 815-3496 / (305) 815-5430</p>
+            <p><strong>Email:</strong> 📩 info@ferflowers.com</p>
+            <div class="follow">
+                <h4>Follow Us</h4>
+                <div class="icon">
+                    <a href="https://www.instagram.com/ferflowers.shop?igsh=aWx6ZGxxN2J5aGU4" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>@ 2024, FER FLOWERS</p>
+        </div>
+    </footer>
+
+    <!-- Square Payment Form JavaScript -->
+    <script type="text/javascript" src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+    <script src="js/square-config.js"></script>
+    <script type="text/javascript">
+        async function initializeCard(payments) {
+            const card = await payments.card();
+            await card.attach('#card-container');
+            return card;
+        }
+
+        async function createPayment(token) {
+            const body = JSON.stringify({
+                locationId: squareConfig.locationId,
+                sourceId: token,
+                // Add cart total and other payment details here
+            });
+
+            const paymentResponse = await fetch('/payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body,
+            });
+
+            if (paymentResponse.ok) {
+                return paymentResponse.json();
+            }
+
+            const errorBody = await paymentResponse.text();
+            throw new Error(errorBody);
+        }
+
+        async function tokenize(paymentMethod) {
+            const tokenResult = await paymentMethod.tokenize();
+            if (tokenResult.status === 'OK') {
+                return tokenResult.token;
+            }
+            throw new Error(`Tokenization failed with status: ${tokenResult.status}`);
+        }
+
+        // Status Messages
+        function displayPaymentResults(status) {
+            const statusContainer = document.getElementById('payment-status-container');
+            if (status === 'SUCCESS') {
+                statusContainer.innerHTML = 'Payment Successful!';
+                // Redirect to confirmation page or clear cart
+            } else {
+                statusContainer.innerHTML = 'Payment Failed. Please try again.';
+            }
+        }
+
+        // Main
+        document.addEventListener('DOMContentLoaded', async function () {
+            if (!window.Square) {
+                throw new Error('Square.js failed to load properly');
+            }
+
+            const payments = window.Square.payments(squareConfig.applicationId, squareConfig.locationId);
+            let card;
+            try {
+                card = await initializeCard(payments);
+            } catch (e) {
+                console.error('Failed to initialize card:', e);
+                return;
+            }
+
+            async function handlePaymentMethodSubmission(event, paymentMethod) {
+                event.preventDefault();
+
+                try {
+                    const token = await tokenize(paymentMethod);
+                    const paymentResults = await createPayment(token);
+                    displayPaymentResults('SUCCESS');
+                } catch (e) {
+                    displayPaymentResults('FAILURE');
+                    console.error(e.message);
+                }
+            }
+
+            const cardButton = document.getElementById('card-button');
+            cardButton.addEventListener('click', async function (event) {
+                await handlePaymentMethodSubmission(event, card);
+            });
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>

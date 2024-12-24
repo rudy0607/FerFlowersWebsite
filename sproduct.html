@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech2etc Ecommerce Tutorial</title>
+    <link rel="icon" type="image/png" href="Images/fwdlogoferflowers/ferflower-logo.png">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <section id="header">
+        <a href="#"><img src="Images/fwdlogoferflowers/ferflower-logo.png" class="logo" alt=""></a>
+
+        <div>
+            <ul id="navbar">
+                <li><a href="index.html">Home</a></li>
+                <li><a class="active" href="shop.html">Shop</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li id="lg-bag"><a href="cart.html"><i class="far fa-shopping-bag"></i></a></li>
+                <a href="#" id="close"><i class="far fa-times"></i></a>
+            </ul>
+        </div>
+        <div id="mobile">
+            <a href="cart.html"><i class="far fa-shopping-bag"></i></a>
+            <i id="bar" class="fas fa-outdent"></i>
+        </div>
+    </section>
+
+    <section id="prodetails" class="section-p1">
+        <div class="single-pro-image">
+            <img src="Images/JPGS/pexels-secret-garden-333350-931177.jpg" width="100%" id="MainImg" alt="">
+            <div class="small-img-group">
+                <div class="small-img-col">
+                    <img src="Images/JPGS/pexels-hebertsantos-6273274.jpg" width="100%" class="small-img" alt="">
+                </div>
+                <div class="small-img-col">
+                    <img src="Images/JPGS/pexels-jmark-250591.jpg" width="100%" class="small-img" alt="">
+                </div>
+                <div class="small-img-col">
+                    <img src="Images/JPGS/pexels-pixabay-56866.jpg" width="100%" class="small-img" alt="">
+                </div>
+                <div class="small-img-col">
+                    <img src="Images/JPGS/pexels-secret-garden-333350-931177.jpg" width="100%" class="small-img" alt="">
+                </div>
+            </div>
+        </div>
+
+        <div class="single-pro-details">
+            <h6>Floral Arrangements</h6>
+            <h4 id="product-name">Custom Bouquet Design</h4>
+            <h2 id="product-price">$89.00</h2>
+            <select id="arrangement-type">
+                <option value="mixed">Mixed Arrangement</option>
+                <option value="roses">Roses Only</option>
+                <option value="seasonal">Seasonal Mix</option>
+                <option value="custom">Custom Selection</option>
+            </select>
+            <input type="number" value="1" min="1" id="quantity">
+            <button class="normal" onclick="addToCart(
+                'custom-bouquet',
+                document.getElementById('product-name').textContent,
+                parseFloat(document.getElementById('product-price').textContent.replace('$', '')),
+                document.querySelector('.single-pro-image img').src,
+                parseInt(document.getElementById('quantity').value)
+            )">Add To Cart</button>
+            <h4>Arrangement Details</h4>
+            <span>Create your perfect bouquet with our custom design service. Choose from a variety of fresh, seasonal flowers 
+                including roses, lilies, hydrangeas, and more. Each arrangement is carefully crafted by our expert florists 
+                to ensure the highest quality and longest lasting beauty. Perfect for special occasions, weddings, or 
+                as a thoughtful gift.</span>
+        </div>
+    </section>
+
+    <section id="product1" class="section-p1">
+        <h2>Similar Arrangements</h2>
+        <p>Fresh and Elegant Floral Designs</p>
+        <div class="pro-container">
+            <div class="pro">
+                <img src="Images/JPGS/pexels-secret-garden-333350-931177.jpg" alt="Luxury Arrangement">
+                <div class="des">
+                    <h5>Luxury Rose Bouquet</h5>
+                    <p>Premium roses with seasonal accents</p>
+                </div>
+            </div>
+            <div class="pro">
+                <img src="Images/JPGS/pexels-hebertsantos-6273274.jpg" alt="Wedding Bouquet">
+                <div class="des">
+                    <h5>Wedding Collection</h5>
+                    <p>Elegant white and blush arrangement</p>
+                </div>
+            </div>
+            <div class="pro">
+                <img src="Images/JPGS/pexels-jmark-250591.jpg" alt="Spring Mix">
+                <div class="des">
+                    <h5>Spring Celebration</h5>
+                    <p>Colorful seasonal mix</p>
+                </div>
+            </div>
+            <div class="pro">
+                <img src="Images/JPGS/pexels-pixabay-56866.jpg" alt="Classic Bouquet">
+                <div class="des">
+                    <h5>Classic Garden Mix</h5>
+                    <p>Timeless floral arrangement</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="section-p1">
+        <div class="col">
+            <img src="Images/fwdlogoferflowers/ferflower-logo.png" class="logo" alt="">
+            <h4>Contact</h4>
+            <p><strong>Address:</strong> Your Store Address</p>
+            <p><strong>Phone:</strong> Your Phone Number</p>
+            <p><strong>Hours:</strong> Business Hours</p>
+            <div class="follow">
+                <h4>Follow Us</h4>
+                <div class="icon">
+                    <a href="https://www.instagram.com/ferflowers.shop?igsh=aWx6ZGxxN2J5aGU4" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>@ 2024, FER FLOWERS</p>
+        </div>
+    </footer>
+
+    <script>
+        var MainImg = document.getElementById("MainImg");
+        var smallimg = document.getElementsByClassName("small-img");
+
+        smallimg[0].onclick = function() {
+            MainImg.src = smallimg[0].src;
+        }
+        smallimg[1].onclick = function() {
+            MainImg.src = smallimg[1].src;
+        }
+        smallimg[2].onclick = function() {
+            MainImg.src = smallimg[2].src;
+        }
+        smallimg[3].onclick = function() {
+            MainImg.src = smallimg[3].src;
+        }
+    </script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
